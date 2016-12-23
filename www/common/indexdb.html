@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>indexdb存储数据</title>
+    <script>
+    /*学习indexdb*/
+    /*1. 获取关于indexdb的一些对象，为了浏览器的兼容性*/
+
+    window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+    window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction;
+    window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
+    window.IDBCursor = window.IDBCursor || window.webkitIDBCursor || window.msIDBCursor;
+
+    /*2.定义数据库的配置信息*/
+    var dbInfo = {
+    	dbName:'大家是最棒的22', /*数据库名称*/
+    	dbversion: 5 /*数据库版本号*/
+
+    };
+
+    /*3.创建数据库链接 如果数据库不存在就创建，创建完打开，存在的话就不创建了，直接打开*/
+    var dbConnect = window.indexedDB.open(dbInfo.dbName,dbInfo.dbversion);
+    /*3.1 数据库的版本升级 只要你版本号给以前不一样他就会调用，会调此方法，第一次创建数据库也会调用
+	以后只要数据库版本更改 就会掉此方法
+	我们一般在此方法 里边 创建表store（表）或者修改表都在这里边执行
+    */
+    dbConnect.onupgradeneeded = function (e) {
+    	console.log('数据库版本发生变化');
+    }
+    /*3.2 数据库链接成功会回调此方法 我们一般操作数据库的增删改查都在这里边进行操作*/
+    dbConnect.onsuccess = function (e) {
+    	console.log(e);
+    	console.log('数据库链接成功');
+    	
+    }
+	/*3.3链接数据库失败的时候执行此方法*/
+    dbConnect.onerror = function (e) {
+    	console.log('数据库链接失败');
+    }
+
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>
